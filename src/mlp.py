@@ -24,7 +24,20 @@ class MLPClassifier:
   def classify(self, data ):
     guesses = []
     for datum in data:
-      # fill predictions in the guesses list
+      
+      
       "*** YOUR CODE HERE ***"
+      ## - Kevin, Ely : fill predictions in the guesses list
+      
+      # Input -> First Hidden Layer
+      vectors_L1 = util.Counter()
+      for l in range(0, length_w1):             # 
+        vectors_L1[l] = self.weights[l] * datum # weights is multidimensional 
+        
+      # First Hidden Layer -> Second Hidden Layer
+      vectors_L2 = util.Counter()
+      
+      
+      ## - End Kevin, Ely
       util.raiseNotDefined()
     return guesses
