@@ -39,10 +39,27 @@ class PerceptronClassifier:
     self.features = trainingData[0].keys() # could be useful later
     # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING
     
+    ## - Ely
+    guesses_label = []
+    ## - End Ely
+
     for iteration in range(self.max_iterations):
       print "Starting iteration ", iteration, "..."
+      
+      ## - Kevin
+      guesses_label[iteration] = PerceptronClassifier.classify(trainingData)
+      ## - End Kevin
+      
       for i in range(len(trainingData)):
           "*** YOUR CODE HERE ***"
+          ## - Ely, Kevin: Update Weights
+          if (guesses_label[i] == trainingLabels[i]):
+            pass
+          elif (guesses_label[i] != trainingLabels[i]):
+            self.weights[guesses_label[i]] = self.weight[guesses_label[i]] - trainingData[i]
+            self.weights[trainingLabels[i]] = self.weight[trainingLabels[i]] + trainingData[i]
+          ## - End Ely, Kevin
+          
           util.raiseNotDefined()
     
   def classify(self, data ):
@@ -68,6 +85,11 @@ class PerceptronClassifier:
     featuresWeights = []
 
     "*** YOUR CODE HERE ***"
+    ## - Kevin
+    for labels in self.legalLabels:
+      weight_container = self.weights[labels]
+      featuresWeights.append(weight_container.sortedKeys()[0:100])
+    ## - End Kevin
     util.raiseNotDefined()
 
     return featuresWeights
