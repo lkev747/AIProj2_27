@@ -26,6 +26,9 @@ class MLPClassifier:
       print "Starting iteration ", iteration, "..."
       for i in range(len(trainingData)):
           "*** YOUR CODE HERE ***"
+          ## Clasify Trainging data
+          ## backpropogation
+          
           util.raiseNotDefined()
     
   def classify(self, data ):
@@ -55,6 +58,32 @@ class MLPClassifier:
         vectors_op[i] = self.weights_op[i] * vectors_L2
         vectors_op[i] = sigmoid(vectors_op)
       
-      ## - End Kevin, Ely
+      guesses.append(vectors_op.argMax())
+      ## - End Kevin, Ely      
       util.raiseNotDefined()
-    return guesses
+    return guesses, vectors_L1, vectors_L2, vectors_op
+  
+  def backpropogation (self, data, trainingLabels, vectors_L1, vectors_L2, vectors_op, ):
+    ## calculate ERROR
+    output_error = []
+    
+    Etot = 0
+    for i in range(0, 10):
+      if trainingLabels == i:
+        Etot = Etot + .5*(1 - vectors_op[i])^2
+      else
+        Etot = Etot + .5*(vectors_op[i])^2
+    
+    partialEtot_out = []
+    partialOuti_net = []
+    partialNeti_Wn = []
+    partialEtot_Wn = []
+    
+    for i in range(0, 10):
+      partialEtot_out.append(vectors_op[i] - trainingLabels) 
+      partialOuti_net.append(vectors_op[i]*(1 - vectors_op[i])) 
+      partialNeti_Wn.append()
+      partialEtot_Wn[i] = partialEtot_out[i] * partialOuti_net[i] * partialNeti_Wn[i]
+    
+      
+      
