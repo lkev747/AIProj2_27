@@ -3,6 +3,13 @@
 
 # mlp implementation
 import util
+
+
+import math # used for sigmoid function
+def sigmoid(x):
+  return 1 / (1 + math.exp(-x))
+
+
 PRINT = True
 
 class MLPClassifier:
@@ -31,12 +38,22 @@ class MLPClassifier:
       
       # Input -> First Hidden Layer
       vectors_L1 = util.Counter()
-      for l in range(0, length_w1):             # 
-        vectors_L1[l] = self.weights[l] * datum # weights is multidimensional 
+      for i in range(0, length_w1):                       # ***** Need to define length_w1 *****
+        vectors_L1[i] = self.weights_L1[i] * datum        # each neuron in L1 has a set of weights; dot product operation
+        vectors_L1[i] = sigmoid(vectors_L1[i])            # sigmoid function
+        
         
       # First Hidden Layer -> Second Hidden Layer
       vectors_L2 = util.Counter()
-      
+      for i in range(0, length_w2):                       # ***** Need to define length_w2 *****
+        vectors_L2[i] = self.weights_L2[i] * vectors_L1
+        vectors_L2[i] = sigmoid(vectors_L2[i])
+        
+      # Second Hidden Layer -> Output Layer
+      vectors_op = util.Counter()
+      for i in range(0, 10):
+        vectors_op[i] = self.weights_op[i] * vectors_L2
+        vectors_op[i] = sigmoid(vectors_op)
       
       ## - End Kevin, Ely
       util.raiseNotDefined()
