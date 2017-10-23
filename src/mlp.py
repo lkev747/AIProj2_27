@@ -41,12 +41,13 @@ class MLPClassifier:
       "*** YOUR CODE HERE ***"
       ## - Kevin, Ely : fill predictions in the guesses list
       
+      '''
       # Input -> First Hidden Layer
       vectors_L1 = util.Counter()
       for i in range(0, length_w1):                       # ***** Need to define length_w1 *****
         vectors_L1[i] = self.weights_L1[i] * datum        # each neuron in L1 has a set of weights; dot product operation
         vectors_L1[i] = sigmoid(vectors_L1[i])            # sigmoid function
-        
+      '''  
         
       # First Hidden Layer -> Second Hidden Layer
       vectors_L2 = util.Counter()
@@ -83,6 +84,8 @@ class MLPClassifier:
         for k in range(0, 10):
           d_err_outputL2 += (vectors_op[k]-target[k])*(vectors_op[k]*(1-vectors_op[k]))*weights_op[k][i]
         weights_L2[i][j] = weights_L2[i][j] - LR * d_err_outputL2 * deriveSigmoid(vectors_L2[i])*trainingdata[j]
+        
+    
       
       
       

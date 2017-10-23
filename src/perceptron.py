@@ -3,7 +3,10 @@
 
 # Perceptron implementation
 import util
+#from aifc import data
 PRINT = True
+
+import random
 
 class PerceptronClassifier:
   """
@@ -38,29 +41,44 @@ class PerceptronClassifier:
     
     self.features = trainingData[0].keys() # could be useful later
     # DO NOT ZERO OUT YOUR WEIGHTS BEFORE STARTING TRAINING
-    
-    ## - Ely
-    guesses_label = []
-    ## - End Ely
 
     for iteration in range(self.max_iterations):
       print "Starting iteration ", iteration, "..."
       
-      ## - Kevin
-      guesses_label[iteration] = PerceptronClassifier.classify(trainingData)
-      ## - End Kevin
+      ## - Ely, Kevin
+      guesses_label = PerceptronClassifier.classify(self, trainingData)
+      ## - End Ely, Kevin
       
+      print guesses_label
       for i in range(len(trainingData)):
           "*** YOUR CODE HERE ***"
-          ## - Ely, Kevin: Update Weights
+          ## - Ely, Kevin: Update Weights          
           if (guesses_label[i] == trainingLabels[i]):
             pass
           elif (guesses_label[i] != trainingLabels[i]):
-            self.weights[guesses_label[i]] = self.weight[guesses_label[i]] - trainingData[i]
-            self.weights[trainingLabels[i]] = self.weight[trainingLabels[i]] + trainingData[i]
+            self.weights[guesses_label[i]] = self.weights[guesses_label[i]] - trainingData[i]
+            self.weights[trainingLabels[i]] = self.weights[trainingLabels[i]] + trainingData[i]
           ## - End Ely, Kevin
           
-          util.raiseNotDefined()
+    ## Finished running through max_iterations. 
+    ## NOW we need to use these weights on the validation set
+    
+    print "Training Completed"
+    
+    correct = 0
+    val_guesses_label = PerceptronClassifier.classify(self, validationData)
+    for i in range(len(validationData)):
+      print "Testing: ", i
+      if(val_guesses_label[i] == validationLabels[i]):
+        correct += 1
+        print "Good Job"
+    accuracy = float(correct)/float(len(validationLabels))
+    print correct
+    print accuracy
+    
+    
+          ##util.raiseNotDefined()
+
     
   def classify(self, data ):
     """
@@ -70,10 +88,11 @@ class PerceptronClassifier:
     Recall that a datum is a util.counter... 
     """
     guesses = []
-    for datum in data:
+    #for datum in data:
+    for i in range(0, len(data)):
       vectors = util.Counter()
       for l in self.legalLabels:
-        vectors[l] = self.weights[l] * datum
+        vectors[l] = self.weights[l] * data[i]
       guesses.append(vectors.argMax())
     return guesses
 
@@ -94,3 +113,57 @@ class PerceptronClassifier:
 
     return featuresWeights
 
+## Take and Make Input Flat
+from samples import loadDataFile
+from samples import loadLabelsFile
+from samples import Datum
+def FlatInput(n, items):
+  flat_items = [[] for _ in range(n)]
+  for m in range(0, n): 
+    for i in range(0, 28):
+      for j in range(0, 28):
+        flat_items[m].append(items[m].getPixel(i, j))
+  return flat_items
+       
+def callData():
+    n = 100
+    #items = loadDataFile("data/digitdata/trainingimages", n,28,28)
+    #for item in items:
+      #items = util.Counter()
+    
+    items = loadDataFile("data/digitdata/trainingimages", n,28,28)
+    flat_item = FlatInput(n, items)
+
+    
+    trainingData = {}
+    for i in range(len(flat_item)):
+      trainingData[i] = util.Counter()
+      for j in range(len(flat_item[i])):
+        trainingData[i][j] = flat_item[i][j]
+        
+    
+    labels = loadLabelsFile("data/digitdata/traininglabels", n)
+    
+    val_items = loadDataFile("data/digitdata/validationimages", n,28,28)
+    flat_val = FlatInput(n, val_items)
+    
+    validationData = {}
+    for i in range(len(flat_val)):
+      validationData[i] = util.Counter()
+      for j in range(len(flat_val[i])):
+        validationData[i][j] = flat_val[i][j]
+    
+    val_labels = loadLabelsFile("data/digitdata/validationlabels", n)
+    data = PerceptronClassifier( [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 10)
+    
+    weights = {}
+    for w in range(0, 10): 
+      weights[w] = util.Counter()
+      for i in range(0,784):
+        weights[w][i] = random.random()
+            
+    data.setWeights(weights)
+    data.train(trainingData, labels, validationData, val_labels)
+
+## Unit Test
+callData()
