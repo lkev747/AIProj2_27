@@ -162,11 +162,10 @@ def convertToInteger(data):
 def _test():
   import doctest
   doctest.testmod() # Test the interactive sessions in function comments
-  n = 3
+  n = 10
   items = loadDataFile("data/digitdata/trainingimages", n,28,28)
   labels = loadLabelsFile("data/digitdata/traininglabels", n)
   for i in range(n):
-    print items[i]
     print items[i]
     print (items[i].height)
     print (items[i].width)
