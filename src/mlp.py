@@ -9,6 +9,8 @@ import math # used for sigmoid function
 def sigmoid(x):
   return 1 / (1 + math.exp(-x))
 
+def deriveSigmoid(self, output):
+  return output*(1-output)
 
 PRINT = True
 
@@ -63,27 +65,24 @@ class MLPClassifier:
       util.raiseNotDefined()
     return guesses, vectors_L1, vectors_L2, vectors_op
   
-  def backpropogation (self, data, trainingLabels, vectors_L1, vectors_L2, vectors_op, ):
+  
+  
+  
+  def backpropogation (self, trainingdata, trainingLabels, vectors_L2, vectors_op, weights_op, LR, weights_L2):
+    target = []
+    for i in range(0, 10):
+      if (trainingLabels == i):
+        target.append(1)
+      else:
+        target.append(0)
     ## calculate ERROR
-    output_error = []
     
-    Etot = 0
-    for i in range(0, 10):
-      if trainingLabels == i:
-        Etot = Etot + .5*(1 - vectors_op[i])^2
-      else
-        Etot = Etot + .5*(vectors_op[i])^2
-    
-    partialEtot_out = []
-    partialOuti_net = []
-    partialNeti_Wn = []
-    partialEtot_Wn = []
-    
-    for i in range(0, 10):
-      partialEtot_out.append(vectors_op[i] - trainingLabels) 
-      partialOuti_net.append(vectors_op[i]*(1 - vectors_op[i])) 
-      partialNeti_Wn.append()
-      partialEtot_Wn[i] = partialEtot_out[i] * partialOuti_net[i] * partialNeti_Wn[i]
-    
+    for i in range(0, vectors_L2.length):
+      for j in range(0, trainingdata.length):
+        d_err_outputL2 = 0
+        for k in range(0, 10):
+          d_err_outputL2 += (vectors_op[k]-target[k])*(vectors_op[k]*(1-vectors_op[k]))*weights_op[k][i]
+        weights_L2[i][j] = weights_L2[i][j] - LR * d_err_outputL2 * deriveSigmoid(vectors_L2[i])*trainingdata[j]
+      
       
       
