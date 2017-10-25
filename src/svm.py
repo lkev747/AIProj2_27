@@ -80,40 +80,22 @@ def FlatInput(n, items):
   return flat_items
        
 def callData():
-    n = 10
+    n = 1000
+    m = 1000
     
     items = loadDataFile("data/digitdata/trainingimages", n,28,28)
     trainingData = FlatInput(n, items)
-
-    
-    #trainingData = {}
-    #for i in range(len(flat_item)):
-    #  trainingData[i] = util.Counter()
-    #  for j in range(len(flat_item[i])):
-    #    trainingData[i][j] = flat_item[i][j]
-        
+      
     
     labels = loadLabelsFile("data/digitdata/traininglabels", n)
     
-    val_items = loadDataFile("data/digitdata/validationimages", n,28,28)
-    validationData = FlatInput(n, val_items)
+    val_items = loadDataFile("data/digitdata/testimages", m,28,28)
+    validationData = FlatInput(m, val_items)
     
-    #validationData = {}
-    #for i in range(len(flat_val)):
-    #  validationData[i] = util.Counter()
-    #  for j in range(len(flat_val[i])):
-    #    validationData[i][j] = flat_val[i][j]
     
-    val_labels = loadLabelsFile("data/digitdata/validationlabels", n)
+    val_labels = loadLabelsFile("data/digitdata/testlabels", m)
     data = SVMClassifier([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
     
-    #weights = {}
-    #for w in range(0, 10): 
-    #  weights[w] = util.Counter()
-    #  for i in range(0,784):
-    #    weights[w][i] = random.random()
-            
-    #data.setWeights(weights)
     data.train(trainingData, labels, validationData, val_labels)
 
 ## Unit Test
